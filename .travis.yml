@@ -6,4 +6,5 @@ before install:
   - sudo apt-get update
 install:
   - pip install beautifulsoup4
-  
+script:
+  - nosetests  
