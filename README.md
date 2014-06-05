@@ -4,4 +4,6 @@ nptel-dl
 
 NPTEL downloader
 Download all the available contents at one go .
-Great way to avoid click-download.
+
+1. Write the api 
+2. Use api for download
