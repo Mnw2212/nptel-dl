@@ -10,8 +10,7 @@ class Branches:
 			Along with that return a dictionary of all the courses
 			dict = {'CourseName':'url'}
 		'''
-		htmltext=urllib2.urlopen("file:///home/mayuresh/Desktop/nptel-dl/IITs and IISc elearning Courses in Engineering and Science under NPTEL.html").read()
-		soup=BeautifulSoup(htmltext)
+		htmltext=urllib2.urlopen("http://www.nptel.ac.in").read()
 		x = soup.find_all('a',style="border:thin", solid="")
 		x = x[4:]
 		CourseList=dict()
@@ -23,7 +22,7 @@ class Branches:
 		return Courses,CourseList
 
 	def CourseList(self):
-		htmltext = urllib2.urlopen("file:///home/mayuresh/Desktop/nptel-dl/phase2.html")
+		htmltext = urllib2.urlopen("http://nptel.ac.in/courses.php?disciplineId=106")
 		soup = BeautifulSoup(htmltext)
 		table = soup.find_all('tr', valign="top")
 		content_table = BeautifulSoup(str(table[0]))
