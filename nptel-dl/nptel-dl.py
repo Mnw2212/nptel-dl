@@ -1,28 +1,55 @@
-import urllib2
-from bs4 import BeautifulSoup
+class Stream:
+	def StreamUrl():
+		'''
 
-import re
-class Branches:
+		Returns a list all the available streams of study on the nptel website.
+
+		'''
+		htmltext=urllib2.urlopen("file:///home/mayuresh/Desktop/nptel-dl/IITs and IISc elearning Courses in Engineering and Science under NPTEL.html").read()
+		soup=BeautifulSoup(htmltext)
+		x = soup.find_all('a',style="border:thin", solid="")
+		x = x[4:]
+		return x
+
+
+	def StreamDict():
+		'''
+			Returns a list of the all the available Branches or streams
+			Returna a dictionary of all the courses
+			dict = {'CourseName':'url'}
+		'''
+		x=StreamUrl()
+		Courses=dict()
+		for link in x:
+			Courses.update({link.contents[0].encode('ascii'):link.get('href')})
+
+		return Courses
 
 	def StreamList():
 		'''
 			Returns a list of the all the available Branches or streams
-			Along with that return a dictionary of all the courses
-			dict = {'CourseName':'url'}
 		'''
-		htmltext=urllib2.urlopen("http://www.nptel.ac.in").read()
-		x = soup.find_all('a',style="border:thin", solid="")
-		x = x[4:]
-		CourseList=dict()
+		x=StreamUrl()
 		Courses=[]
 		for link in x:
-			CourseList.update({link.contents[0].encode('ascii'):link.get('href')})
 			Courses.append(link.contents[0].encode('ascii'))
 
-		return Courses,CourseList
+		return Courses
 
-	def CourseList(self):
-		htmltext = urllib2.urlopen("http://nptel.ac.in/courses.php?disciplineId=106")
+class Course:
+	def CourseList(self,url):
+		'''
+		Lists of each course with the details of course.
+		[[Course,
+			ContentType,
+			Prof,
+			University,
+			DownloadLink,
+			...],
+			[...]
+		]
+		'''
+		htmltext = urllib2.urlopen(url)
 		soup = BeautifulSoup(htmltext)
 		table = soup.find_all('tr', valign="top")
 		content_table = BeautifulSoup(str(table[0]))
@@ -41,8 +68,9 @@ class Branches:
 				except:
 					continue
 			final_arr.append(tr)
-		print final_arr[8][4]
+		print final_arr[8][ 4]
 		return final_arr
+
 
 	def DownloadLink(self,final_arr):
 		for i in range(len(final_arr)):
@@ -54,9 +82,6 @@ class Branches:
 				continue
 			print links
 
+
 def Soupify(string):
 	return BeautifulSoup(string)
-
-final = Branches()
-course = final.CourseList()
-Link = final.DownloadLink(course)
